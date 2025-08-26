@@ -20,6 +20,7 @@ export default defineConfig({
         @use '@/assets/colors' as *;
         @use '@/assets/transitions' as *;
         @use '@/assets/variables' as *;
+        @use '@/assets/breakpoints' as *;
         `,
       },
     },
