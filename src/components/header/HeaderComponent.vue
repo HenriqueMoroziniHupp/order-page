@@ -32,7 +32,6 @@ const { header } = defineProps<{
       <StatusOrder class="order-status" :header />
     </div>
   </div>
-  <pre>{{ header }}</pre>
 </template>
 
 <style lang="scss" scoped>
