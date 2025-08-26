@@ -22,9 +22,9 @@ const { header } = defineProps<{
     <div class="container">
       <div class="order-data">
         <h5 class="order-data__buyer" v-text="header.buyer" />
-        <InfoItem :src="useIcons('user')" :text="header.contact.name" />
+        <InfoItem :src="useIcons('name')" :text="header.contact.name" />
         <div class="contact">
-          <InfoItem :src="useIcons('envelope')" :text="header.contact.email" />
+          <InfoItem :src="useIcons('email')" :text="header.contact.email" />
           <InfoItem :src="useIcons('phone')" :text="header.contact.phone" />
           <InfoItem :src="useIcons('fax')" :text="header.contact.fax" />
         </div>
@@ -92,9 +92,9 @@ const { header } = defineProps<{
   }
 
   .container {
-    width: 100%;
     margin: 0 1.25rem;
     display: flex;
+    flex-grow: 1;
     justify-content: space-between;
     background-color: $white;
 
