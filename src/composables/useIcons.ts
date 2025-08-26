@@ -9,12 +9,12 @@ import InfoTip from '/icons/info-tip.svg'
 
 export const icons = {
   addressCard: LightAddressCard,
-  envelope: LightEnvelope,
+  email: LightEnvelope,
   eye: LightEye,
   fax: LightFax,
   locationCheck: LightLocationCheck,
   phone: LightPhone,
-  user: LightUser,
+  name: LightUser,
   infoTip: InfoTip,
 }
 

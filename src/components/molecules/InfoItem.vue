@@ -1,8 +1,7 @@
 <script setup lang="ts">
-const { src, text } = defineProps<{
-  src: string
-  text: string
-}>()
+import type { IInfoItem } from '@/types/order'
+
+const { src, text } = defineProps<IInfoItem>()
 </script>
 
 <template>
