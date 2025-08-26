@@ -6,6 +6,7 @@ import LightLocationCheck from '/icons/Light-location-check.svg'
 import LightPhone from '/icons/Light-phone.svg'
 import LightUser from '/icons/Light-user.svg'
 import InfoTip from '/icons/info-tip.svg'
+import Arrow from '/icons/Arrow.svg'
 
 export const icons = {
   addressCard: LightAddressCard,
@@ -16,6 +17,7 @@ export const icons = {
   phone: LightPhone,
   name: LightUser,
   infoTip: InfoTip,
+  arrow: Arrow,
 }
 
 type IconName = keyof typeof icons
