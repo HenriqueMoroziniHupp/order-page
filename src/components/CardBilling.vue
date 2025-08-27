@@ -29,6 +29,7 @@ const { title, name, code, infoItens } = defineProps<{
 
 <style scoped lang="scss">
 .card {
+  user-select: none;
   padding: 1.25rem;
   border-radius: 0.5rem;
   color: $gray-500;
