@@ -1,5 +1,27 @@
 <script setup lang="ts">
+import { ref, onErrorCaptured } from 'vue'
 import LoadingPage from '@/components/LoadingPage.vue'
+import ErrorPage from '@/components/ErrorPage.vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const hasError = ref(false)
+
+onErrorCaptured((error, instance, info) => {
+  console.error('Erro capturado:', error)
+  console.error('Instância:', instance)
+  console.error('Info:', info)
+
+  hasError.value = true
+
+  return false
+})
+
+const resetError = async () => {
+  await router.push({ path: '/' })
+
+  hasError.value = false
+}
 </script>
 
 <template>
@@ -7,7 +29,10 @@ import LoadingPage from '@/components/LoadingPage.vue'
     <template v-if="Component">
       <Transition mode="out-in" name="fade">
         <Suspense>
-          <component :is="Component"></component>
+          <template #default>
+            <component v-if="!hasError" :is="Component"></component>
+            <ErrorPage v-else @button-click="resetError" />
+          </template>
           <template #fallback>
             <LoadingPage
               title="Carregando Aplicação"
@@ -19,15 +44,3 @@ import LoadingPage from '@/components/LoadingPage.vue'
     </template>
   </RouterView>
 </template>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

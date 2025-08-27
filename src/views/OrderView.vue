@@ -4,13 +4,7 @@ import API from '@/api/orders'
 import HeaderOrder from '@/components/header/HeaderComponent.vue'
 import type { IOrder } from '@/types/order'
 import CardBilling from '@/components/CardBilling.vue'
-import ErrorPage from '@/components/ErrorPage.vue'
 import { useIcons } from '@/composables/useIcons'
-
-interface IErrorResponse {
-  message: string
-  detail: string
-}
 
 const { orderId } = defineProps({
   orderId: {
@@ -22,7 +16,6 @@ const { orderId } = defineProps({
 const order = ref<IOrder>({} as IOrder)
 const showAddress = ref(true)
 const loading = ref(true)
-const responseError = ref({} as IErrorResponse)
 
 const toggleAddress = () => {
   showAddress.value = !showAddress.value
@@ -34,9 +27,8 @@ const getOrder = async () => {
     const response = await API.getOrder(orderId)
 
     order.value = response.data
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    responseError.value = error.response.data
+  } catch (error: unknown) {
+    throw new Error(`Falha ao carregar pedido ${orderId}: ${error}`)
   } finally {
     loading.value = false
   }
@@ -47,7 +39,7 @@ await getOrder()
 
 <template>
   <Transition name="fade" mode="out-in">
-    <div class="order-view" v-if="!responseError.message && order.header">
+    <div class="order-view" v-if="order.header">
       <HeaderOrder :header="order.header" />
 
       <div class="content">
@@ -132,8 +124,6 @@ await getOrder()
         </div>
       </div>
     </div>
-
-    <ErrorPage v-else-if="responseError.message" />
   </Transition>
 </template>
 
