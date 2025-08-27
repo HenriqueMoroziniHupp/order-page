@@ -30,7 +30,6 @@ export default defineConfig({
       '/api': {
         target: 'https://api.mercadoe.space',
         changeOrigin: true,
-        secure: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },

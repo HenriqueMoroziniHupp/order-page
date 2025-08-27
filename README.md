@@ -20,15 +20,15 @@ Este projeto é uma aplicação web que permite visualizar detalhes de pedidos. 
 - ✅ Informações de cobrança e endereço
 - ✅ Toggle para mostrar/ocultar endereço
 - ✅ Tratamento de estados de loading e erro
-- ✅ Redirecionamento automático para `/order/1`
+- ✅ Redirecionamento automático para `/order/1` devido a api ter apenas um item
 
 ### Técnicas
 
 - ✅ Suspense global para carregamento assíncrono
 - ✅ Tratamento de erros com página de erro personalizada
-- ✅ Spinner interativo nos botões
 - ✅ Roteamento com Vue Router
-- ✅ Integração com API do Mercado Livre
+- ✅ Integração com API
+- ✅ Animações
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -53,7 +53,7 @@ src/
 │   ├── header/    # Componentes do cabeçalho
 │   └── molecules/ # Componentes moleculares
 ├── composables/   # Funções compostas do Vue
-├── config/        # Configurações (Axios, etc.)
+├── config/        # Configurações de biblioteca
 ├── router/        # Configuração de rotas
 ├── types/         # Definições de tipos TypeScript
 ├── utils/         # Funções utilitárias
