@@ -5,6 +5,7 @@ import HeaderOrder from '@/components/header/HeaderComponent.vue'
 import type { IOrder } from '@/types/order'
 import CardBilling from '@/components/CardBilling.vue'
 import { useIcons } from '@/composables/useIcons'
+import { useHead } from '@unhead/vue'
 
 const { orderId } = defineProps({
   orderId: {
@@ -21,6 +22,13 @@ const toggleAddress = () => {
   showAddress.value = !showAddress.value
 }
 
+const setHead = () => {
+  useHead({
+    title: 'ME',
+    titleTemplate: `%s -  ${order.value.header.buyer}`,
+  })
+}
+
 const getOrder = async () => {
   try {
     loading.value = true
@@ -35,6 +43,7 @@ const getOrder = async () => {
 }
 
 await getOrder()
+setHead()
 </script>
 
 <template>

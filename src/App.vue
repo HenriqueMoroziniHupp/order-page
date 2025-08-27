@@ -3,6 +3,12 @@ import { ref, onErrorCaptured } from 'vue'
 import LoadingPage from '@/components/LoadingPage.vue'
 import ErrorPage from '@/components/ErrorPage.vue'
 import { useRouter } from 'vue-router'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'ME',
+  titleTemplate: '%s -  Order',
+})
 
 const router = useRouter()
 const hasError = ref(false)
