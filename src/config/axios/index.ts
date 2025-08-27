@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const mercadoAPI = axios.create({
-  baseURL: 'https://api.mercadoe.space',
+  baseURL: '/api',
 })
 
 export { mercadoAPI }
