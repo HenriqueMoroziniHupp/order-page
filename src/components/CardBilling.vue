@@ -21,7 +21,7 @@ const { title, name, code, infoItens } = defineProps<{
         </div>
       </div>
     </div>
-    <div class="card__bottom">
+    <div class="card__bottom" v-if="infoItens.length">
       <InfoItem v-for="(item, key) in infoItens" :key :src="item.src" :text="item.text" />
     </div>
   </div>
