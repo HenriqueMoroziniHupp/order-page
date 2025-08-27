@@ -1,3 +1,4 @@
+// Fade
 .fade-enter-active,
 .fade-leave-active {
   transition: all 0.3s ease;
@@ -6,4 +7,33 @@
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+// Shrink-up
+.shrink-up-enter-active,
+.shrink-up-leave-active {
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.shrink-up-enter-from {
+  opacity: 0;
+  transform: translateY(-30px) scale(0.8);
+  max-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.shrink-up-leave-to {
+  opacity: 0;
+  transform: translateY(-30px) scale(0.8);
+  max-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.shrink-up-enter-to,
+.shrink-up-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  max-height: 500px;
 }
