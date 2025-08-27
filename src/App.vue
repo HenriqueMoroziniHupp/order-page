@@ -1,11 +1,33 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import LoadingPage from '@/components/LoadingPage.vue'
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <RouterView v-slot="{ Component }">
+    <template v-if="Component">
+      <Transition mode="out-in" name="fade">
+        <Suspense>
+          <component :is="Component"></component>
+          <template #fallback>
+            <LoadingPage
+              title="Carregando Aplicação"
+              subtitle="Aguarde enquanto carregamos o conteúdo..."
+            />
+          </template>
+        </Suspense>
+      </Transition>
+    </template>
+  </RouterView>
 </template>
 
-<style scoped></style>
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

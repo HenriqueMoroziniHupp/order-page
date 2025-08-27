@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import API from '@/api/orders'
 import HeaderOrder from '@/components/header/HeaderComponent.vue'
 import type { IOrder } from '@/types/order'
 import CardBilling from '@/components/CardBilling.vue'
+import ErrorPage from '@/components/ErrorPage.vue'
 import { useIcons } from '@/composables/useIcons'
+
+interface IErrorResponse {
+  message: string
+  detail: string
+}
 
 const { orderId } = defineProps({
   orderId: {
@@ -12,111 +18,123 @@ const { orderId } = defineProps({
     required: true,
   },
 })
+
 const order = ref<IOrder>({} as IOrder)
 const showAddress = ref(true)
+const loading = ref(true)
+const responseError = ref({} as IErrorResponse)
 
 const toggleAddress = () => {
   showAddress.value = !showAddress.value
 }
 
-onMounted(async () => {
+const getOrder = async () => {
   try {
+    loading.value = true
     const response = await API.getOrder(orderId)
 
     order.value = response.data
-  } catch (error) {
-    console.error(error)
-    //
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    responseError.value = error.response.data
+  } finally {
+    loading.value = false
   }
-})
+}
+
+await getOrder()
 </script>
 
 <template>
-  <div class="order-view" v-if="order.header">
-    <HeaderOrder :header="order.header" />
+  <Transition name="fade" mode="out-in">
+    <div class="order-view" v-if="!responseError.message && order.header">
+      <HeaderOrder :header="order.header" />
 
-    <div class="content">
-      <CardBilling
-        :title="'Supplier'"
-        :name="order.supplier.name"
-        :code="order.supplier.code"
-        :info-itens="[
-          {
-            src: useIcons('addressCard'),
-            text: `${order.supplier.document.type}: ${order.supplier.document.value}`,
-          },
-          {
-            src: useIcons('email'),
-            text: order.supplier.contact.email,
-          },
-          {
-            src: useIcons('locationCheck'),
-            text: order.supplier.address,
-          },
-          {
-            src: useIcons('phone'),
-            text: order.supplier.contact.phone,
-          },
-          {
-            src: useIcons('name'),
-            text: order.supplier.contact.name,
-          },
-          {
-            src: useIcons('fax'),
-            text: order.supplier.contact.fax,
-          },
-          {
-            src: useIcons('eye'),
-            text: order.supplier.readAt,
-          },
-        ]"
-      />
+      <div class="content">
+        <CardBilling
+          :title="'Supplier'"
+          :name="order.supplier.name"
+          :code="order.supplier.code"
+          :info-itens="[
+            {
+              src: useIcons('addressCard'),
+              text: `${order.supplier.document.type}: ${order.supplier.document.value}`,
+            },
+            {
+              src: useIcons('email'),
+              text: order.supplier.contact.email,
+            },
+            {
+              src: useIcons('locationCheck'),
+              text: order.supplier.address,
+            },
+            {
+              src: useIcons('phone'),
+              text: order.supplier.contact.phone,
+            },
+            {
+              src: useIcons('name'),
+              text: order.supplier.contact.name,
+            },
+            {
+              src: useIcons('fax'),
+              text: order.supplier.contact.fax,
+            },
+            {
+              src: useIcons('eye'),
+              text: order.supplier.readAt,
+            },
+          ]"
+        />
 
-      <div class="accordion">
-        <div class="accordion__button" @click="toggleAddress">
-          <img
-            :class="['icon', { 'icon--inverted': showAddress }]"
-            :src="useIcons('arrow')"
-            alt="Arrow"
-          />
-          <span v-text="'Address'" />
-        </div>
-        <transition name="shrink-up">
-          <section class="address" v-if="showAddress">
-            <CardBilling
-              v-for="(address, key) in order.addresses"
-              :key
-              :title="address.label"
-              :name="address.name"
-              :code="address.code"
-              :info-itens="[
-                {
-                  src: useIcons('locationCheck'),
-                  text: address.address,
-                },
-                {
-                  src: useIcons('name'),
-                  text: address.contact.name,
-                },
-                {
-                  src: useIcons('email'),
-                  text: address.contact.email,
-                },
-                {
-                  src: useIcons('phone'),
-                  text: order.supplier.contact.phone,
-                },
-                {
-                  src: useIcons('fax'),
-                  text: order.supplier.contact.fax,
-                },
-              ]"
+        <div class="accordion">
+          <div class="accordion__button" @click="toggleAddress">
+            <img
+              :class="['icon', { 'icon--inverted': showAddress }]"
+              :src="useIcons('arrow')"
+              alt="Arrow"
             />
-          </section>
-        </transition>
+            <span v-text="'Address'" />
+          </div>
+          <transition name="shrink-up">
+            <section class="address" v-if="showAddress">
+              <CardBilling
+                v-for="(address, key) in order.addresses"
+                :key
+                :title="address.label"
+                :name="address.name"
+                :code="address.code"
+                :info-itens="[
+                  {
+                    src: useIcons('locationCheck'),
+                    text: address.address,
+                  },
+                  {
+                    src: useIcons('name'),
+                    text: address.contact.name,
+                  },
+                  {
+                    src: useIcons('email'),
+                    text: address.contact.email,
+                  },
+                  {
+                    src: useIcons('phone'),
+                    text: order.supplier.contact.phone,
+                  },
+                  {
+                    src: useIcons('fax'),
+                    text: order.supplier.contact.fax,
+                  },
+                ]"
+              />
+            </section>
+          </transition>
+        </div>
       </div>
     </div>
-  </div>
+
+    <ErrorPage v-else-if="responseError.message" />
+  </Transition>
 </template>
 
 <style lang="scss" scoped>
